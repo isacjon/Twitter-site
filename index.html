@@ -1,21 +1,34 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="sv">
 <head>
-   <meta charset="UTF-8">
-   <title>Kavastu tweets</title>
+<meta charset="UTF-8">
+<title>Kavastu Spegling</title>
+<style>
+body { font-family: sans-serif; max-width: 600px; margin: 20px auto; }
+.tweet { border-bottom: 1px solid #ddd; padding: 10px 0; }
+.date { color: #555; font-size: 0.9em; }
+</style>
 </head>
-
 <body>
-   
-   <h2>Senaste tweets från kavastu</h2>
-   
-   <a class="twitter-timeline" data-height="600" href="https://twitter.com/kavastu">
-      Tweets by kavastu
-   </a>
-   
-   <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-   
-</body>
+<h2>Senaste tweets från kavastu</h2>
+<div id="tweets">Laddar tweets…</div>
 
+<script>
+// URL till JSON via Publish
+const tweetsUrl = 'https://publish.twitter.com/oembed?url=https://twitter.com/kavastu';
+
+// Hämtar tweets
+fetch(tweetsUrl)
+  .then(res => res.json())
+  .then(data => {
+    const container = document.getElementById('tweets');
+    // Embed-kod från Twitter
+    container.innerHTML = data.html;
+  })
+  .catch(err => {
+    document.getElementById('tweets').innerText = 'Kunde inte ladda tweets.';
+    console.error(err);
+  });
+</script>
+</body>
 </html>
